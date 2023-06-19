@@ -129,12 +129,13 @@ console.log(req.params.productname)
               
         }  
         );
-        console.log(searchresult)
+        if(searchresult.length===0){
+            return  resp.status(404).json({message:"Item Not Found !"});
+        }
+   
         resp.status(200).json(searchresult);
-     
-    if(searchresult.length===0){
-        return  res.status(404).json({message:"Item Not Found !"});
-    }
+        console.log(searchresult);
+  
     };
 
 
@@ -144,6 +145,7 @@ const expensivedata = async (req,resp)=>{
     const expensive =  await sell_module.find({
         'price':{ "$gte":"500"}}).sort({"price":-1});
     
+
 
 
     resp.status(200).json(expensive);
