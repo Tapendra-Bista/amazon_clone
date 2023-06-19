@@ -131,7 +131,11 @@ console.log(req.params.productname)
         );
         console.log(searchresult)
         resp.status(200).json(searchresult);
-        };
+     
+    if(searchresult.length===0){
+        return  res.status(404).json({message:"Item Not Found !"});
+    }
+    };
 
 
 // expensive
