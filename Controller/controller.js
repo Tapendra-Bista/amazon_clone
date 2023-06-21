@@ -1,7 +1,6 @@
 import {sign_module,sell_module,rating_module,cart_model} from "../Configuration/configuration.js";
 import bcrypt from "bcrypt";
 import dotenv from "dotenv";
-import { response } from "express";
 import Jwt from "jsonwebtoken";
 
 dotenv.config();
@@ -196,30 +195,40 @@ res.status(200).json(datacreated);
 
      // cart by user 
      const putcard = async(req,res)=>{
- const {product,cartqauntity,usermail} = req.body;
- const foundproduct = cart_model.find({product});
- if (!foundproduct ){
-    const createcart = cart_model.create({
+ const {cartqauntity,usermail,image,productname,discription,price,qantity,catergory} = req.body;
+const  checkingitem = await cart_model.findOne({productname:req.body.productname});
+ if (!checkingitem){
+    const createcart = await cart_model.create({
         usermail:usermail,
-        product:{
             image:image,
             productname:productname,
             discription:discription,
             price:price,
-            qantity:qantity,
+            qantity:qantity,      
             catergory:catergory,
-        },
         cartqauntity:cartqauntity,
      });
-     res.status(200).json({message:"product added to cart"});
- }
+     console.log(createcart);
+    return  res.status(200).json({message:"product added to cart"});
+    
+ }else {
+  const updatequantity = await cart_model.updateOne( 
+{
+$set:req.body,
 
- if (createcart.length===0){
+}) ;
+console.log(updatequantity);
 
+    return  res.status(201).json({message:"qauntity",updatequantity});  
  }
      }
-
-export {getrating,postrating,available, cheapdata,expensivedata, signup, signin ,post_sell,get_sell,delete_sell,patch_sell,data_req,searchitem};
+// cart get 
+const getcart = async(req,res)=>{
+const data = await cart_model.find();
+res.status(200).json(data);
+console.log(data);
+}
+export {getcart,putcard,getrating,postrating,available, cheapdata,expensivedata, signup, signin ,post_sell,get_sell,delete_sell,patch_sell,data_req,searchitem};
 
 
 

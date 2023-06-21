@@ -82,7 +82,7 @@ const sell_sechema =new  mongoose.Schema({
   },
 });
 // for rating 
-const ratingnadreviewSchema= mongoose.Schema({
+const ratingnadreviewSchema= new  mongoose.Schema({
 productid:  {
   type:String,
   required:true,
@@ -103,15 +103,51 @@ rating:{
 }
 });
 
-const cartSechma = mongoose.Schema({
+
+const cartSechma = new  mongoose.Schema({
   useremail:{
     type:String,
     require:true,
   },
-  prouct:sell_sechema ,
+  image:[
+    {
+      type:String,
+      required:true,
+    }
+    
+  ],
+  
+  productname:{
+    type:String,
+    required:true,
+   
+
+  },
+  discription:{
+    type:String,
+    required:true,
+  
+  },
+  price:{
+    type:String,
+    required:true,
+   
+  },
+  qantity:{
+    type:String,
+    required:true,
+   
+  },
+  
+  catergory:{
+    type:String,
+    required:true,
+   
+  },
   cartqauntity:{
     type:String,
     require:true,
   }
 })
 export { sign_schema,sell_sechema,ratingnadreviewSchema,cartSechma};
+
