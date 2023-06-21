@@ -101,5 +101,17 @@ rating:{
   type:String, 
   required:true,// Number means both int and double
 }
+});
+
+const cartSechma = mongoose.Schema({
+  useremail:{
+    type:String,
+    require:true,
+  },
+  prouct:sell_sechema ,
+  cartqauntity:{
+    type:String,
+    require:true,
+  }
 })
-export { sign_schema,sell_sechema,ratingnadreviewSchema};
+export { sign_schema,sell_sechema,ratingnadreviewSchema,cartSechma};

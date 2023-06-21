@@ -1,6 +1,7 @@
-import {sign_module,sell_module,rating_module} from "../Configuration/configuration.js";
+import {sign_module,sell_module,rating_module,cart_model} from "../Configuration/configuration.js";
 import bcrypt from "bcrypt";
 import dotenv from "dotenv";
+import { response } from "express";
 import Jwt from "jsonwebtoken";
 
 dotenv.config();
@@ -192,6 +193,32 @@ res.status(200).json(datacreated);
 
 
      }
+
+     // cart by user 
+     const putcard = async(req,res)=>{
+ const {product,cartqauntity,usermail} = req.body;
+ const foundproduct = cart_model.find({product});
+ if (!foundproduct ){
+    const createcart = cart_model.create({
+        usermail:usermail,
+        product:{
+            image:image,
+            productname:productname,
+            discription:discription,
+            price:price,
+            qantity:qantity,
+            catergory:catergory,
+        },
+        cartqauntity:cartqauntity,
+     });
+     res.status(200).json({message:"product added to cart"});
+ }
+
+ if (createcart.length===0){
+
+ }
+     }
+
 export {getrating,postrating,available, cheapdata,expensivedata, signup, signin ,post_sell,get_sell,delete_sell,patch_sell,data_req,searchitem};
 
 
