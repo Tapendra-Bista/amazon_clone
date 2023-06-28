@@ -1,6 +1,6 @@
 
 import mongoose from "mongoose";
-// sechema for sign
+// sechema for sign in and sign up
 const sign_schema = new mongoose.Schema({
   username: {
     type: String,
@@ -26,8 +26,8 @@ const sign_schema = new mongoose.Schema({
     validate: {
       validator: (value) => {
 
-        
-        return value.length>8;
+
+        return value.length > 8;
 
       },
       message: "Length of password must be greater than 8 ",
@@ -42,112 +42,116 @@ const sign_schema = new mongoose.Schema({
     type: String,
     default: "user",
   }
-});
+},{ versionKey: false });
 
-// to sell goods 
-const sell_sechema =new  mongoose.Schema({
-  image:[
+//  for to add a new products
+const sell_sechema = new mongoose.Schema({
+  image: [
     {
-      type:String,
-      required:true,
+      type: String,
+      required: true,
     }
-    
+
   ],
-  
-  productname:{
-    type:String,
-    required:true,
-   
 
-  },
-  discription:{
-    type:String,
-    required:true,
-    unique:true,
-  },
-  price:{
-    type:String,
-    required:true,
-   
-  },
-  qantity:{
-    type:String,
-    required:true,
-   
-  },
-  catergory:{
-    type:String,
-    required:true,
-   
-  },
-});
-// for rating 
-const ratingnadreviewSchema= new  mongoose.Schema({
-productid:  {
-  type:String,
-  required:true,
-  },
-ratingGiver:{
-type:String,
-required:true,
-
-},
-review:{
-  type:String,
-  required:true,
-},
-
-rating:{
-  type:String, 
-  required:true,// Number means both int and double
-}
-});
+  productname: {
+    type: String,
+    required: true,
 
 
-const cartSechma = new  mongoose.Schema({
-  useremail:{
-    type:String,
-    require:true,
   },
-  image:[
-    {
-      type:String,
-      required:true,
-    }
-    
-  ],
-  
-  productname:{
-    type:String,
-    required:true,
-   
+  discription: {
+    type: String,
+    required: true,
+    unique: true,
+  },
+  price: {
+    type: String,
+    required: true,
 
   },
-  discription:{
-    type:String,
-    required:true,
-  
+  qantity: {
+    type: String,
+    required: true,
+
   },
-  price:{
-    type:String,
-    required:true,
-   
+  catergory: {
+    type: String,
+    required: true,
+
   },
-  qantity:{
-    type:String,
-    required:true,
-   
+},{ versionKey: false });
+// for rating  a products by user
+const ratingnadreviewSchema = new mongoose.Schema({
+  productid: {
+    type: String,
+    required: true,
   },
-  
-  catergory:{
-    type:String,
-    required:true,
-   
+  ratingGiver: {
+    type: String,
+    required: true,
+
   },
-  cartqauntity:{
-    type:String,
-    require:true,
+  review: {
+    type: String,
+    required: true,
+  },
+
+  rating: {
+    type: String,
+    required: true,// Number means both int and double
   }
-})
-export { sign_schema,sell_sechema,ratingnadreviewSchema,cartSechma};
+},{ versionKey: false });
+
+// cart schema for products
+
+const cartSechma = new mongoose.Schema({
+  useremail: {
+    type: String,
+    require: true,
+  },
+  image: [
+    {
+      type: String,
+      required: true,
+    }
+
+  ],
+
+  productname: {
+    type: String,
+    required: true,
+
+
+  },
+  discription: {
+    type: String,
+    required: true,
+
+  },
+  price: {
+    type: String,
+    required: true,
+
+  },
+  qantity: {
+    type: String,
+    required: true,
+
+  },
+  catergory: {
+    type: String,
+    required: true,
+
+  },
+  cartqauntity: {
+    type: String,
+    require: true,
+  }
+},{ versionKey: false })
+export { sign_schema, sell_sechema, ratingnadreviewSchema, cartSechma };
+
+
+
+
 
