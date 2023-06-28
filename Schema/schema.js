@@ -145,10 +145,12 @@ const cartSechma = new mongoose.Schema({
 
   },
   cartqauntity: {
-    type: String,
+    type: Number,
     require: true,
   }
-},{ versionKey: false })
+},{ versionKey: false });
+
+
 export { sign_schema, sell_sechema, ratingnadreviewSchema, cartSechma };
 
 

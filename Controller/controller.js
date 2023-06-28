@@ -215,22 +215,31 @@ const putcard = async (req, res) => {
         return res.status(200).json({ message: "product added to cart" });
 
     } else {
-
  const cartupdate  = await cart_model.findOneAndUpdate({
-     productname:req.body. productname,
-$set:req.body
- });
- console.log(cartupdate)
- return res.status(201).json({message:"updated cart quantity"});
+    productname:req.body.productname,
+ },{
+   $inc:{"cartqauntity":1}
+  }
+ );
+  
+ console.log("quantity increment by 1");
+ return res.status(201).json({message:"quantity increment by 1"});
+
 }
     }
+
 
 
 // display list of  products cart 
 const getcart = async (req, res) => {
     const data = await cart_model.find();
-    res.status(200).json(data);
-    console.log(data);
+if (data.length===0){
+  return  res.status(404).json({message:"Add a products in cart"});
+}
+console.log(data);
+
+ return res.status(200).json(data);
+ 
 }
 export { getcart, putcard, getrating, postrating, available, cheapdata, expensivedata, signup, signin, post_sell, get_sell, delete_sell, patch_sell, data_req, searchitem };
 

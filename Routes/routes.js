@@ -23,7 +23,7 @@ routes.route("/available").get(available);
 
 routes.route("/rating").get(getrating).post(postrating);
 // cart 
-routes.route("/cart").get(getcart).post(putcard).patch(putcard);
+routes.route("/cart").get(getcart).patch(putcard);
 export default routes;
 
 
