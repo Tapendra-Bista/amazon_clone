@@ -70,7 +70,7 @@ const sell_sechema = new mongoose.Schema({
     required: true,
 
   },
-  qantity: {
+  quantity: {
     type: String,
     required: true,
 
@@ -134,7 +134,7 @@ const cartSechma = new mongoose.Schema({
     required: true,
 
   },
-  qantity: {
+  quantity: {
     type: String,
     required: true,
 

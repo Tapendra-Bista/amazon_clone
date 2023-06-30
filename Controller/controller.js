@@ -58,18 +58,18 @@ const signin = async (req, resp) => {
 
 // for sell or add a products
 const post_sell = async (req, resp) => {
-    const { image, productname, discription, price, qantity, catergory } = req.body;
+    const { image, productname, discription, price, quantity, catergory } = req.body;
     const data = await sell_module.create({
         image: image,
         productname: productname,
         discription: discription,
         price: price,
-        qantity: qantity,
+        quantity: quantity,
         catergory: catergory,
     });
     resp.status(200).json({ status: true, message: 'New item created' });
     console.log(data);
-    if (!image && !productname && !discription && !price && qantity && !catergory) {
+    if (!image && !productname && !discription && !price && quantity && !catergory) {
         resp.status(403).json({ message: 'Invalid Input' });
     }
 }
@@ -95,7 +95,7 @@ const delete_sell = async (red, resp) => {
 };
 // patch a products 
 const patch_sell = async (req, resp) => {
-    const { productname, discription, price, qantity, catergory } = req.body;
+    const { productname, discription, price, quantity, catergory } = req.body;
     const patchdata = await sell_module.updateOne(
         {
             _id: req.params.id
@@ -197,7 +197,7 @@ const getrating = async (req, res) => {
 
 // add a products in a cart by user 
 const putcard = async (req, res) => {
-    const { cartqauntity, usermail, image, productname, discription, price, qantity, catergory } = req.body;
+    const { cartqauntity, usermail, image, productname, discription, price, quantity, catergory } = req.body;
     const checkingitem = await cart_model.findOne({ productname:req.body. productname});
     if (!checkingitem) {
         const createcart = await cart_model.create({
@@ -206,7 +206,7 @@ const putcard = async (req, res) => {
             image: image,
             discription: discription,
             price: price,
-            qantity: qantity,
+            quantity: quantity,
             catergory: catergory,
             cartqauntity: cartqauntity,
 
@@ -241,7 +241,38 @@ console.log(data);
  return res.status(200).json(data);
  
 }
-export { getcart, putcard, getrating, postrating, available, cheapdata, expensivedata, signup, signin, post_sell, get_sell, delete_sell, patch_sell, data_req, searchitem };
+
+// increment and decrement of  quantity
+const increment = async(req,res)=>{
+const {productname}= req.body;
+const finddata  = await cart_model.findOneAndUpdate({
+    productname:req.body.productname,
+ },{
+   $inc:{"cartqauntity":1}
+  }
+ );
+
+ console.log("increment ");
+ res.status(200).json({message:"increment "})
+};
+
+const decrement = async(req,res)=>{
+    const {productname}= req.body;
+    const finddata  = await cart_model.findOneAndUpdate({
+        productname:req.body.productname,
+     },{
+       $inc:{"cartqauntity":-1}
+      }
+     );
+    
+     console.log("decrement");
+     res.status(200).json({message:"decrement"})
+    };
+
+
+
+
+export {increment,decrement, getcart, putcard, getrating, postrating, available, cheapdata, expensivedata, signup, signin, post_sell, get_sell, delete_sell, patch_sell, data_req, searchitem };
 
 
 

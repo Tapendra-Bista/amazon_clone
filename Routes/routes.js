@@ -1,6 +1,6 @@
 import express from "express";
 // callback function of routes 
-import { putcard, available, getcart, expensivedata, signin, signup, get_sell, post_sell, delete_sell, patch_sell, searchitem, data_req, cheapdata, getrating, postrating } from "../Controller/controller.js";
+import { putcard, available, getcart, expensivedata, signin, signup, get_sell, post_sell, delete_sell, patch_sell, searchitem, data_req, cheapdata, getrating, postrating, increment, decrement } from "../Controller/controller.js";
 const routes = express.Router();
 // search a produts 
 routes.route("/Products/search/:productname").get(searchitem);
@@ -24,6 +24,10 @@ routes.route("/available").get(available);
 routes.route("/rating").get(getrating).post(postrating);
 // cart 
 routes.route("/cart").get(getcart).patch(putcard);
+// decrement and increment
+routes.route("/increment").patch(increment);
+routes.route("/decrement").patch(decrement);
+
 export default routes;
 
 
