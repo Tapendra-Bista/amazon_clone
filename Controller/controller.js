@@ -1,4 +1,4 @@
-import { sign_module, sell_module, rating_module, cart_model } from "../Configuration/configuration.js";
+import { sign_module, sell_module, rating_module, cart_model, totalModel } from "../Configuration/configuration.js";
 // importing models 
 import bcrypt from "bcrypt";
 import dotenv from "dotenv";
@@ -149,8 +149,6 @@ const expensivedata = async (req, resp) => {
     }).sort({ "price": -1 });
 
 
-
-
     resp.status(200).json(expensive);
 };
 
@@ -197,82 +195,118 @@ const getrating = async (req, res) => {
 
 // add a products in a cart by user 
 const putcard = async (req, res) => {
-    const { cartqauntity, usermail, image, productname, discription, price, quantity, catergory } = req.body;
-    const checkingitem = await cart_model.findOne({ productname:req.body. productname});
+    const { cartquantity, usermail, image, productnameId, productname, discription, price, quantity, catergory } = req.body;
+    const checkingitem = await cart_model.findOne({ productname: req.body.productname });
     if (!checkingitem) {
         const createcart = await cart_model.create({
             productname: productname,
+            productnameId: productnameId,
             usermail: usermail,
             image: image,
             discription: discription,
             price: price,
             quantity: quantity,
             catergory: catergory,
-            cartqauntity: cartqauntity,
+            cartquantity: cartquantity,
 
         });
         console.log(createcart);
         return res.status(200).json({ message: "product added to cart" });
 
     } else {
- const cartupdate  = await cart_model.findOneAndUpdate({
-    productname:req.body.productname,
- },{
-   $inc:{"cartqauntity":1}
-  }
- );
-  
- console.log("quantity increment by 1");
- return res.status(201).json({message:"quantity increment by 1"});
+        const cartupdate = await cart_model.findOneAndUpdate({
+            productname: req.body.productname,
+        }, {
+            $inc: { "cartquantity": 1 }
+        }
+        );
 
-}
+        console.log("quantity increment by 1");
+        return res.status(201).json({ message: "quantity increment by 1" });
+
     }
+}
 
 
 
 // display list of  products cart 
 const getcart = async (req, res) => {
     const data = await cart_model.find();
-if (data.length===0){
-  return  res.status(404).json({message:"Add a products in cart"});
-}
-console.log(data);
+    if (data.length === 0) {
+        return res.status(404).json({ message: "Add a products in cart" });
+    }
+    console.log(data);
+    return res.status(200).json(data);
 
- return res.status(200).json(data);
- 
 }
 
 // increment and decrement of  quantity
-const increment = async(req,res)=>{
-const {productname}= req.body;
-const finddata  = await cart_model.findOneAndUpdate({
-    productname:req.body.productname,
- },{
-   $inc:{"cartqauntity":1}
-  }
- );
+const increment = async (req, res) => {
+    const { productname } = req.body;
+    const finddata = await cart_model.findOneAndUpdate({
+        productname,
+    }, {
+        $inc: { "cartquantity": 1 }
+    }
+    );
 
- console.log("increment ");
- res.status(200).json({message:"increment "})
+    console.log("increment ", finddata);
+    res.status(200).json({ message: "increment ", finddata });
+
 };
 
-const decrement = async(req,res)=>{
-    const {productname}= req.body;
-    const finddata  = await cart_model.findOneAndUpdate({
-        productname:req.body.productname,
-     },{
-       $inc:{"cartqauntity":-1}
-      }
-     );
-    
-     console.log("decrement");
-     res.status(200).json({message:"decrement"})
-    };
+const decrement = async (req, res) => {
+    const { productname } = req.body;
+    const findData = await cart_model.findOne({ productname });
+    if (findData) {
+        if (findData['cartquantity'] === 0) {
+            const deleteCart = await cart_model.deleteOne({ productname });
+
+            console.log(deleteCart);
+            return res.status(202).json(deleteCart);
+
+        }
+    }
+    const finddata = await cart_model.findOneAndUpdate({
+        productname,
+    }, {
+        $inc: { "cartquantity": -1 }
+    }
+    );
+    console.log("decrement", finddata);
+  return  res.status(200).json({ message: "decrement", finddata })
+   
+};
 
 
+// total amount and total cartnumber 
+const total = async (req, res) => {
+
+    const findCart = await cart_model.find();
+    if (findCart.length === 0) {
+        console.log(`total amount is ${amount}\ntotal items is ${totalItems}`);
+        return res.status(404).json({ message: "List is empty" })
+    }
+    if (findCart.length != 0) {
+        var amount = 0;
+        var totalItems = 0;
+        for (var i = 0; i < findCart.length; i++) {
+            amount += findCart[i]['cartquantity'] * findCart[i]['price'];
+            totalItems = findCart.length;
+        }
+        const data = await totalModel.updateOne({
+            amount: amount,
+            items: totalItems
+        });
+        const getData = await totalModel.find();
+        console.log(`total amount is ${amount}\ntotal items is ${totalItems}\n`, data, getData);
+        return res.status(200).json(getData);
+    }
 
 
-export {increment,decrement, getcart, putcard, getrating, postrating, available, cheapdata, expensivedata, signup, signin, post_sell, get_sell, delete_sell, patch_sell, data_req, searchitem };
+}
+
+export { total, increment, decrement, getcart, putcard, getrating, postrating, available, cheapdata, expensivedata, signup, signin, post_sell, get_sell, delete_sell, patch_sell, data_req, searchitem };
 
 
 

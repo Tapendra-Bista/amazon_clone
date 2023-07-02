@@ -124,6 +124,12 @@ const cartSechma = new mongoose.Schema({
 
 
   },
+  productnameId: {
+    type: String,
+    required: true,
+
+
+  },
   discription: {
     type: String,
     required: true,
@@ -144,14 +150,24 @@ const cartSechma = new mongoose.Schema({
     required: true,
 
   },
-  cartqauntity: {
+  cartquantity: {
     type: Number,
-    require: true,
+    required: true,
   }
 },{ versionKey: false });
 
-
-export { sign_schema, sell_sechema, ratingnadreviewSchema, cartSechma };
+const totalSchema = mongoose.Schema({
+ amount: {
+    type: Number,
+    required: true,
+  },
+ items: {
+    type: Number,
+    required: true,
+  }
+},{ versionKey: false }
+);
+export {totalSchema, sign_schema, sell_sechema, ratingnadreviewSchema, cartSechma };
 
 
 
