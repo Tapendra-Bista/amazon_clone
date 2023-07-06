@@ -42,7 +42,7 @@ const sign_schema = new mongoose.Schema({
     type: String,
     default: "user",
   }
-},{ versionKey: false });
+}, { versionKey: false });
 
 //  for to add a new products
 const sell_sechema = new mongoose.Schema({
@@ -80,7 +80,7 @@ const sell_sechema = new mongoose.Schema({
     required: true,
 
   },
-},{ versionKey: false });
+}, { versionKey: false });
 // for rating  a products by user
 const ratingnadreviewSchema = new mongoose.Schema({
   productid: {
@@ -101,7 +101,7 @@ const ratingnadreviewSchema = new mongoose.Schema({
     type: String,
     required: true,// Number means both int and double
   }
-},{ versionKey: false });
+}, { versionKey: false });
 
 // cart schema for products
 
@@ -121,7 +121,6 @@ const cartSechma = new mongoose.Schema({
   productname: {
     type: String,
     required: true,
-
 
   },
   productnameId: {
@@ -154,22 +153,98 @@ const cartSechma = new mongoose.Schema({
     type: Number,
     required: true,
   }
-},{ versionKey: false });
+}, { versionKey: false });
 
 const totalSchema = mongoose.Schema({
- amount: {
+  amount: {
     type: Number,
     required: true,
   },
- items: {
+  items: {
     type: Number,
     required: true,
   }
-},{ versionKey: false }
+}, { versionKey: false }
 );
-export {totalSchema, sign_schema, sell_sechema, ratingnadreviewSchema, cartSechma };
+
+const addressSchema = mongoose.Schema({
+  houseNumber: {
+    type: Number,
+    required: true,
+  }
+  ,
+  area: {
+    type: String,
+    required: true,
+  },
+  pinCode: {
+    type: Number,
+    required: true,
+  },
+  city: {
+    type: String,
+    required: true,
+  },
+  userEmail: {
+    type: String,
+    required: true,
+  }
+}, { versionkey: true, timestamps: true });
+
+// order item
+// cart schema for products
+
+const orderSechma = new mongoose.Schema({
+  useremail: {
+    type: String,
+    require: true,
+  },
+  image: [
+    {
+      type: String,
+      required: true,
+    }
+
+  ],
+
+  productname: {
+    type: String,
+    required: true,
+
+  },
+  productnameId: {
+    type: String,
+    required: true,
 
 
+  },
+  discription: {
+    type: String,
+    required: true,
 
+  },
+  price: {
+    type: String,
+    required: true,
 
+  },
+  quantity: {
+    type: String,
+    required: true,
 
+  },
+  catergory: {
+    type: String,
+    required: true,
+
+  },
+  cartquantity: {
+    type: Number,
+    required: true,
+  }
+}, { versionKey: false });
+export {
+  orderSechma, addressSchema, totalSchema,
+  sign_schema, sell_sechema, ratingnadreviewSchema,
+  cartSechma
+};

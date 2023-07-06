@@ -1,4 +1,7 @@
-import { sign_module, sell_module, rating_module, cart_model, totalModel } from "../Configuration/configuration.js";
+import {
+    orderModel, addressModel, sign_module,
+    sell_module, rating_module, cart_model, totalModel
+} from "../Configuration/configuration.js";
 // importing models 
 import bcrypt from "bcrypt";
 import dotenv from "dotenv";
@@ -274,8 +277,8 @@ const decrement = async (req, res) => {
     }
     );
     console.log("decrement", finddata);
-  return  res.status(200).json({ message: "decrement", finddata })
-   
+    return res.status(200).json({ message: "decrement", finddata })
+
 };
 
 
@@ -306,7 +309,83 @@ const total = async (req, res) => {
 
 }
 
-export { total, increment, decrement, getcart, putcard, getrating, postrating, available, cheapdata, expensivedata, signup, signin, post_sell, get_sell, delete_sell, patch_sell, data_req, searchitem };
+const address = async (req, res) => {
+    const { userEmail, houseNumber, area, city, pinCode } = req.body;
+    const findAddress = await addressModel.findOne({ houseNumber });
+    if (!findAddress) {
+        const createAddress = await addressModel.create({
+            userEmail: req.body.userEmail,
+            houseNumber: req.body.houseNumber,
+            area: req.body.area,
+            city: req.body.city,
+            pinCode: req.body.pinCode,
+        });
+        console.log(createAddress);
+        return res.status(200).json({ message: "Address Created", createAddress });
+
+    };
+
+    if (findAddress) {
+        return res.status(200).json({ message: "Use this data" });
+    }
+};
+
+const addressDelete = async (req, res) => {
+    const { houseNumber } = req.body;
+    const findAddress = await addressModel.deleteOne({ houseNumber });
+    console.log(findAddress);
+    return res.status(200).json({ message: "Address Deleted", findAddress });
+
+};
+
+const addressGet = async (req, res) => {
+    const findAddress = await addressModel.find({});
+    if (findAddress.length === 0) {
+        console.log("Zero data");
+        return res.status(404).json({ message: "Zero data" });
+    }
+    console.log(findAddress);
+    return res.status(200).json(findAddress);
+};
+
+// order products
+const orderPut = async (req, res) => {
+    const { cartquantity, usermail, image, productnameId, productname, discription, price, quantity, catergory } = req.body;
+    const checkingitem = await cart_model.findOne({ productname: req.body.productname });
+    if (!checkingitem) {
+        const createcart = await cart_model.create({
+            productname: productname,
+            productnameId: productnameId,
+            usermail: usermail,
+            image: image,
+            discription: discription,
+            price: price,
+            quantity: quantity,
+            catergory: catergory,
+            cartquantity: cartquantity,
+
+        });
+        console.log(createcart);
+        return res.status(200).json({ message: "product added to Order" });
+
+    } else {
+       
+
+        console.log("Products is already in order");
+        return res.status(201).json({ message: "Products is already in order" });
+
+    }
+}
+
+export {orderPut,
+    addressGet, addressDelete, address,
+    total, increment, decrement, getcart,
+    putcard, getrating,
+    postrating, available, cheapdata,
+    expensivedata, signup, signin,
+    post_sell, get_sell, delete_sell,
+    patch_sell, data_req, searchitem
+};
 
 
 

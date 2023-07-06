@@ -1,6 +1,13 @@
 import express from "express";
 // callback function of routes 
-import { putcard, available, getcart, expensivedata, signin, signup, get_sell, post_sell, delete_sell, patch_sell, searchitem, data_req, cheapdata, getrating, postrating, increment, decrement, total } from "../Controller/controller.js";
+import {orderPut,
+    addressGet, addressDelete, address, putcard,
+    available, getcart, expensivedata, signin, signup,
+    get_sell, post_sell, delete_sell,
+    patch_sell, searchitem, data_req, cheapdata, getrating,
+    postrating, increment, decrement, total
+} from "../Controller/controller.js";
+
 const routes = express.Router();
 // search a produts 
 routes.route("/Products/search/:productname").get(searchitem);
@@ -20,7 +27,6 @@ routes.route("/expensive").get(expensivedata);
 routes.route("/cheap").get(cheapdata);
 routes.route("/available").get(available);
 // ratinng
-
 routes.route("/rating").get(getrating).post(postrating);
 // cart 
 routes.route("/cart").get(getcart).patch(putcard);
@@ -28,8 +34,11 @@ routes.route("/cart").get(getcart).patch(putcard);
 routes.route("/increment").patch(increment);
 routes.route("/decrement").patch(decrement);
 // total amount
-
-routes.route("/amount").get(total)
+routes.route("/amount").get(total);
+// address 
+routes.route("/address").get(addressGet).post(address).delete(addressDelete);
+// order
+routes.route("/order").post(orderPut);
 export default routes;
 
 
